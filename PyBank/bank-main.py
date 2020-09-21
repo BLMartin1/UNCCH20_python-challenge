@@ -29,13 +29,44 @@
 
 # * In addition, your final script should both print the analysis to the terminal and export a text file with the results.
 
-
 import os
 import csv
 
-output_path = os.path.join('..',('Resources','finacial_data.csv'))
+file_path = 'Resources/budget_data.csv'
 
-with open(output_path, 'w') as csvfile:
-    csv_writer = csv.writer(csvfile, delimiter=',')
-    csv_writer.writerow(['Date', 'Profit/Losses'])
+print(f'Financial Analysis')
+print(f'------------------------')
+
+total_months = []
+total_profit = []
+average_change = []
+running_max = float('-inf')
+running_max_date = ''
+# Number of months
+with open(file_path) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    next(csvreader)
     
+    for row in csvreader:
+        total_months.append(row[0])
+# Total profit
+with open(file_path) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    next(csvreader)
+
+    for row in csvreader:
+        total_profit.append(int(row[1]))
+
+with open(file_path, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    next(csvreader)
+
+    for row in csvreader:
+        running_max = max(csvreader['Profits/Losses'])
+        running_max_date = row[0]
+    
+
+print(f'Total Months: {len(total_months)}')
+print(f'Total: ${sum(total_profit)}')
+print(f'Average Change: ${int(sum(total_profit)/len(total_profit))}')
+print(f'Greatest Increase: {running_max_date} {running_max}')
