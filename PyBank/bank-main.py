@@ -40,8 +40,10 @@ print(f'------------------------')
 total_months = []
 total_profit = []
 average_change = []
-running_max = float('-inf')
-running_max_date = ''
+average_change_result = 0
+previous_pl = 0
+running_max = 0
+running_max_list = []
 # Number of months
 with open(file_path) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
@@ -62,11 +64,30 @@ with open(file_path, newline='') as csvfile:
     next(csvreader)
 
     for row in csvreader:
-        running_max = max(csvreader['Profits/Losses'])
-        running_max_date = row[0]
-    
+        value = int(row[1])
+        if previous_pl != 0:
+            average_change.append(value-previous_pl)
+        previous_pl = int(row[1])
 
-print(f'Total Months: {len(total_months)}')
-print(f'Total: ${sum(total_profit)}')
-print(f'Average Change: ${int(sum(total_profit)/len(total_profit))}')
-print(f'Greatest Increase: {running_max_date} {running_max}')
+with open(file_path, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    next(csvreader)
+    
+    for row[0] in csvreader:
+        date = row[0]
+        if str:
+            running_max_list.append(date)
+    for row[1] in running_max_list:
+        values = float(row[1])
+        running_max_list.append(values)
+
+        
+
+print(running_max_list)
+# print(sum(average_change))
+# print(len(total_months))   
+# average_change_result = sum(average_change)/len(total_months)
+# print(f'Total Months: {len(total_months)}')
+# print(f'Total: ${sum(total_profit)}')
+# print(f'Average Change: ${float(average_change_result)}')
+# # print(f'Greatest Increase: {running_max_date} {running_max}')
