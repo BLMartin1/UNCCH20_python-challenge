@@ -31,7 +31,6 @@
 
 import os
 import csv 
-# from pathlib import Path
 
 file_path = 'Resources/budget_data.csv'
 
