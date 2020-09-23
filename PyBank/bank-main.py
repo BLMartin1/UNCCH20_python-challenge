@@ -30,64 +30,53 @@
 # * In addition, your final script should both print the analysis to the terminal and export a text file with the results.
 
 import os
-import csv
+import csv 
+# from pathlib import Path
 
 file_path = 'Resources/budget_data.csv'
 
-print(f'Financial Analysis')
-print(f'------------------------')
-
 total_months = []
 total_profit = []
-average_change = []
-average_change_result = 0
-previous_pl = 0
-running_max = 0
-running_max_list = []
-# Number of months
-with open(file_path) as csvfile:
+monthly_profit_change = []
+
+with open(file_path, newline='') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
     next(csvreader)
-    
+
     for row in csvreader:
         total_months.append(row[0])
-# Total profit
-with open(file_path) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    next(csvreader)
-
-    for row in csvreader:
         total_profit.append(int(row[1]))
+    for i in range(len(total_profit)-1):
+        monthly_profit_change.append(int(total_profit[i+1])-int(total_profit[i]))
 
-with open(file_path, newline='') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    next(csvreader)
+max_increase_value = max(monthly_profit_change)
+max_decrease_value = min(monthly_profit_change)
 
-    for row in csvreader:
-        value = int(row[1])
-        if previous_pl != 0:
-            average_change.append(value-previous_pl)
-        previous_pl = int(row[1])
+max_increase_month = monthly_profit_change.index(max(monthly_profit_change)) + 1
+max_decrease_month = monthly_profit_change.index(min(monthly_profit_change)) + 1
 
-with open(file_path, newline='') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    next(csvreader)
-    
-    for row[0] in csvreader:
-        date = row[0]
-        if str:
-            running_max_list.append(date)
-    for row[1] in running_max_list:
-        values = float(row[1])
-        running_max_list.append(values)
+print(sum(total_profit))
+print('Finanical Analysis')
+print('------------------------')
+print(f'Total Months: {len(total_months)}')
+print(f'Total: ${sum(total_profit)}')
+print(f'Average Change: ${round(sum(monthly_profit_change)/len(monthly_profit_change),2)}')
+print(f'Greatest Increase in Profits: {total_months[max_increase_month]} (${str(max_increase_value)})')
+print(f'Greatest Decrease in Profits: {total_months[max_decrease_month]} (${str(max_decrease_value)})')
 
-        
+output_file = "Analysis/Financial_Analysis_Summary.txt"
 
-print(running_max_list)
-# print(sum(average_change))
-# print(len(total_months))   
-# average_change_result = sum(average_change)/len(total_months)
-# print(f'Total Months: {len(total_months)}')
-# print(f'Total: ${sum(total_profit)}')
-# print(f'Average Change: ${float(average_change_result)}')
-# # print(f'Greatest Increase: {running_max_date} {running_max}')
+with open(output_file,"w") as file:
+     file.write("Financial Analysis")
+     file.write("\n")
+     file.write("----------------------------")
+     file.write("\n")
+     file.write(f"Total Months: {len(total_months)}")
+     file.write("\n")
+     file.write(f"Total: ${sum(total_profit)}")
+     file.write("\n")
+     file.write(f"Average Change: {round(sum(monthly_profit_change)/len(monthly_profit_change),2)}")
+     file.write("\n")
+     file.write(f"Greatest Increase in Profits: {total_months[max_increase_month]} (${(str(max_increase_value))})")
+     file.write("\n")
+     file.write(f"Greatest Decrease in Profits: {total_months[max_decrease_month]} (${(str(max_decrease_value))})")
